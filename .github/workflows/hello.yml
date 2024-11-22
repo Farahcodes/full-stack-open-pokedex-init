@@ -13,3 +13,7 @@ jobs:
     steps:
     - name: Print Hello World
       run: echo "Hello World!"
+    - name: Print Current Date
+      run: date
+    - name: List Directory Contents
+      run: ls -l
