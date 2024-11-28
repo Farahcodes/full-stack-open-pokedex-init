@@ -33,3 +33,6 @@ jobs:
           wait-on: http://localhost:5000
       - name: Test
         run: npm test
+      - name: Deploy
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/deploy-pages@v2
