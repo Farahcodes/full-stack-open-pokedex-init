@@ -16,6 +16,9 @@ permissions:
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -29,6 +32,12 @@ jobs:
         run: npm run eslint
       - name: Build
         run: npm run build
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: './dist'
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with:
@@ -39,6 +48,7 @@ jobs:
         run: npm test
       - name: Deploy
         if: ${{ github.event_name == 'push' }}
+        id: deployment
         uses: actions/deploy-pages@v2
 
   tag_release:
