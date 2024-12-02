@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+# Define common conditions as environment variables
+env:
+  SKIP_COMMIT: ${{ contains(join(github.event.commits.*.message, ' '), '#skip') }}
+
 permissions:
   contents: write
 
@@ -35,11 +39,11 @@ jobs:
 
   tag_release:
     needs: [simple_deployment_pipeline]
+    if: ${{ !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
       - name: Bump version and push tag
-        if: ${{ github.event_name == 'push' }}
         uses: anothrNick/github-tag-action@1.64.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
