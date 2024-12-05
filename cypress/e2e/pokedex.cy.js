@@ -12,3 +12,5 @@ describe('Pokedex', function() {
     cy.contains('chlorophyll')
   })
 })
+// this is a test to check if pipeline is working
+// this is another test to check if pipeline is working
